@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 
 const CourseModule = (props) => {
 
-    const url = `/course-details/${props.data.id}`
+    const url = `/courses/${props.data.id}`
 
     return (
         <div className="grid-33"><NavLink className='course--module course--link' to={url}>

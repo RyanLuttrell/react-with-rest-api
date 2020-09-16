@@ -26,7 +26,7 @@ const CourseDetail = ({match}) => {
         <div>
             <div className="actions--bar">
             <div className="bounds">
-            <div className="grid-100"><span><NavLink className='button' to='/'>Update Course</NavLink><button className='button' onClick={deleteCourse}>Delete Course</button></span>
+            <div className="grid-100"><span><NavLink className='button' to='/courses/:id/update'>Update Course</NavLink><button className='button' onClick={deleteCourse}>Delete Course</button></span>
             <NavLink className='button button-secondary' to='/'>Return to List</NavLink></div>
             
             </div>

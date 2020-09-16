@@ -7,6 +7,8 @@ import Header from './components/Header';
 import CourseDetail from './components/CourseDetail';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
+import CreateCourse from './components/CreateCourse';
+import UpdateCourse from './components/UpdateCourse';
 
 function App() {
 
@@ -17,10 +19,14 @@ function App() {
         
         <Switch>
           <Route exact path='/' component={Courses} />
-          <Route path='/course-details/:id' component={CourseDetail} />
+          <Route exact path='/courses/create' component={CreateCourse} />
+          <Route path='/courses/:id/update' component={UpdateCourse} />
+          <Route exact path='/courses/:id' component={CourseDetail} />
           <Route path='/signin' component={UserSignIn} />
           <Route path='/signup' component={UserSignUp} />
+
         </Switch>
+
       </div>
     </Router>
   );
