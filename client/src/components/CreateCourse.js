@@ -3,9 +3,8 @@ import {NavLink} from 'react-router-dom';
 
 const CreateCourse = () => {
 
-    
-    const tempFunction = () => {
-        console.log('Woohoo');
+    const createCourse = (event) => {
+        console.log(event.target.description)
     }
 
     return (
@@ -53,7 +52,7 @@ const CreateCourse = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button><NavLink className="button button-secondary" to='/'>Cancel</NavLink></div>
+                    <div className="grid-100 pad-bottom"><button className="button" onClick={createCourse} type='submit'>Create Course</button><NavLink className="button button-secondary" to='/'>Cancel</NavLink></div>
                 </form>
                 </div>
             </div>

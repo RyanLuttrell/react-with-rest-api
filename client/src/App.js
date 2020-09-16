@@ -10,7 +10,7 @@ import UserSignUp from './components/UserSignUp';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 
-function App() {
+export default () => {
 
   return (
     <Router>
@@ -24,12 +24,9 @@ function App() {
           <Route exact path='/courses/:id' component={CourseDetail} />
           <Route path='/signin' component={UserSignIn} />
           <Route path='/signup' component={UserSignUp} />
-
         </Switch>
 
       </div>
     </Router>
   );
 }
-
-export default App;
