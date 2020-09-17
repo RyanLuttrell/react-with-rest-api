@@ -4,14 +4,14 @@ import Form from './Form';
 
 export default class UserSignIn extends Component {
   state = {
-    username: '',
+    email: '',
     password: '',
-    errors: [],
+    errors: '',
   }
 
   render() {
     const {
-      username,
+      email,
       password,
       errors,
     } = this.state;
@@ -28,10 +28,10 @@ export default class UserSignIn extends Component {
             elements={() => (
               <React.Fragment>
                 <input 
-                  id="username" 
-                  name="username" 
+                  id="email" 
+                  name="email" 
                   type="text"
-                  value={username} 
+                  value={email} 
                   onChange={this.change} 
                   placeholder="Email" />
                 <input 
@@ -64,22 +64,19 @@ export default class UserSignIn extends Component {
 
   submit = () => {
     const {context} = this.props;
-    const {from} = this.props.location.state || {from: {pathname: '/authenticated'}};
+    const {from} = this.props.location.state || {from: {pathname: '/'}};
     const {email, password} = this.state;
     context.actions.signIn(email, password)
-    .then( user => {
-      if (user === null) {
-        this.setState(() => {
-          return { errors: [ 'Sign-in was unsuccessful' ] };
-        });
-      } else {
+      .then(user => {
+        if (user.data === null) {
+          this.setState(() => {
+            return {
+              error: user
+            }
+          })
+        } else {
           this.props.history.push(from)
-          console.log(`SUCCESS! ${email} is now signed in!`)
         }
-      })
-      .catch(err => {
-        console.log(err);
-        this.props.history.push('/error')
       })
   }
 

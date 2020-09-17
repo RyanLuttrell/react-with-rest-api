@@ -5,7 +5,6 @@ import CourseModule from './CourseModule';
 
 const Courses = () => {
     const [data, setData] = useState([])
-    const [userData, setUserData] = useState([])
 
     useEffect(() => {
         axios.get('http://localhost:5000/api/courses')

@@ -1,54 +1,111 @@
-import React from 'react';
+import React, {Component, useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
+import axios from 'axios';
+import Form from './Form';
 
-const UpdateCourse =() => {
+export default class UpdateCourse extends Component  {
+
+    componentDidMount() {
+        const courseId = this.props.match.params.id
+        axios.get(`http://localhost:5000/api/courses/${courseId}`)
+        .then(results => {
+            this.setState(() => {
+                return {
+                    title: results.data.title,
+                    description: results.data.description,
+                    estimatedTime: results.data.estimatedTime,
+                    materialsNeeded: results.data.materialsNeeded
+                }
+            })
+        })
+        .catch(error => console.log("Error fetching and parsing data", error))
+    }
+
+    state = {
+        title: '',
+        description: '',
+        estimatedTime: '',
+        materialsNeeded: '',
+        errors: []
+      }
+    
+      render() {
+        const {
+          title,
+          description,
+          estimatedTime,
+          materialsNeeded,
+          errors,
+        } = this.state;
+
+
+
     return (
         <div>
             <div className="bounds course--detail">
                 <h1>Update Course</h1>
                 <div>
-                    <form>
-                        <div className="grid-66">
-                            <div className="course--header">
-                                <h4 className="course--label">Course</h4>
-                                <div>
-                                    <input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value="Build a Basic Book"/>
-                                </div>
-                                <p>By Joe Smith</p>
-                            </div>
-                            <div className="course--description">
-                                <div>
-                                    <textarea id="description" name="description" className="" placeholder="Course description..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="grid-25 grid-right">
-                            <div className="course--stats">
-                                <ul className="course--stats--list">
-                                    <li className="course--stats--list--item">
-                                        <h4>Estimated Time</h4>
-                                        <div>
-                                            <input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value="14 hours"/>
-                                        </div>
-                                    </li>
-                                    <li className="course--stats--list--item">
-                                        <h4>Materials Needed</h4>
-                                        <div>
-                                            <textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..."></textarea>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="grid-100 pad-bottom">
-                            <button className="button" type="submit">Update Course</button>
-                            <NavLink className="button button-secondary" to='/'>Cancel</NavLink>
-                        </div>
-                    </form>
+                    <div className="grid-66">
+                        <Form 
+                            cancel={this.cancel}
+                            errors={errors}
+                            submit={this.submit}
+                            submitButtonText="Update Course"
+                            elements={() => (
+                            <React.Fragment>
+                                <input 
+                                id="title" 
+                                name="title" 
+                                type="text"
+                                value={title} 
+                                onChange={this.change} 
+                                placeholder="Title" />
+                                <input 
+                                id="description" 
+                                name="description" 
+                                type="textarea"
+                                value={description} 
+                                onChange={this.change} 
+                                placeholder="Course Description" />
+                                <input 
+                                id="estimatedTime" 
+                                name="estimatedTime" 
+                                type="text"
+                                value={estimatedTime} 
+                                onChange={this.change} 
+                                placeholder="Estimated Time" />
+                                <input 
+                                id="materialsNeeded" 
+                                name="materialsNeeded"
+                                type="textarea"
+                                value={materialsNeeded} 
+                                onChange={this.change} 
+                                placeholder="Materials Needed" />
+                            </React.Fragment>
+                            )} />
+                    </div>    
                 </div>
             </div>
         </div>
-    )
-}
+    )}
 
-export default UpdateCourse;
+    submit = () => {
+        const courseId = this.props.match.params.id
+        const {context} = this.props;
+        axios.put(`http://localhost:5000/api/courses/${courseId}`)
+    }
+    change = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+    
+        this.setState(() => {
+          return {
+            [name]: value
+          };
+        });
+    }
+
+    cancel = () => {
+        this.props.history.push('/')
+      }
+}

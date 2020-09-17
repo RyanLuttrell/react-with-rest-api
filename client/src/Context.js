@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
-import Data from './Data';
+import axios from 'axios';
 
 const Context = React.createContext(); 
 
@@ -9,11 +9,6 @@ export class Provider extends Component {
   state = {
     authenticatedUser: Cookies.getJSON('authenticatedUser') || null
   };
-
-  constructor() {
-    super();
-    this.data = new Data();
-  }
 
   render() {
     const {authenticatedUser} = this.state;
@@ -33,17 +28,19 @@ export class Provider extends Component {
     );
   }
 
-  
-  signIn = async (username, password) => {
-    const user = await this.data.getUser(username, password);
+  signIn = async (email, password) => {
+    const user = await axios.get('http://localhost:5000/api/users', {
+      auth: {
+        username: email,
+        password: password
+      }
+    })
     if (user !== null) {
       this.setState(() => {
         return {
-          authenticatedUser: user
+          authenticatedUser: user.data
         }
       })
-      //Set cookie
-      Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1});
     }
     return user
   }

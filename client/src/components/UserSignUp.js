@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import Form from './Form';
+import axios from 'axios';
 
 export default class UserSignUp extends Component {
   state = {
-    name: '',
-    username: '',
+    firstName: '',
+    lastName: '',
+    email: '',
     password: '',
+    confirmPassword: '',
     errors: [],
   }
 
@@ -44,7 +47,7 @@ export default class UserSignUp extends Component {
                   type="text"
                   value={lastName} 
                   onChange={this.change} 
-                  placeholder="lastName" />
+                  placeholder="Last Name" />
                 <input 
                   id="email" 
                   name="email" 
@@ -90,30 +93,21 @@ export default class UserSignUp extends Component {
   submit = () => {
     const {context} = this.props;
     const {firstName, lastName, email, password, confirmPassword} = this.state;
-    const user = {
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword
-    }
-    context.data.createUser(user)
-      .then(errors => {
-        if (errors.length) {
-          this.setState({errors})
-        } else {
-          context.actions.signIn(email, password)
-            .then(() => {
-              this.props.history.push('/authenticated')
-            });
-          console.log(`${email} is successfully signed up and authenticated!`)
+
+    if (password === confirmPassword) {
+      axios.post('http://localhost:5000/api/users', {
+        firstName: firstName,
+        lastName: lastName,
+        emailAddress: email,
+        password: password
+      })
+    } else {
+      this.setState(() => {
+        return{
+          errors: ['Passwords do not match']
         }
       })
-      .catch(err => {
-        console.log(err);
-        this.props.history.push('/error')
-      })
-
+    }
   }
 
   cancel = () => {
