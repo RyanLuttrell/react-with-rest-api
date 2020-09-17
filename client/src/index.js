@@ -7,9 +7,9 @@ ReactDOM.render(
 
 // TO DO
 // Add the PROVIDER opening and closing tags around the App componenet
-  <React.StrictMode>
+  <Provider>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 

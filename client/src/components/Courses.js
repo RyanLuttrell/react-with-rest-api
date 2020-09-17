@@ -13,12 +13,6 @@ const Courses = () => {
             .catch(error => console.log("Error fetching and parsing data", error))
     }, [])
 
-    useEffect(() => {
-        axios.get('http://localhost:5000/api/users')
-            .then(response => setUserData(response.data))
-            .catch(error => console.log("Error fetching and parsing data", error))
-    })
-
     const results = data.map(result => <CourseModule data={result} key={result.id}/>)
     return(
         <div className="bounds">
