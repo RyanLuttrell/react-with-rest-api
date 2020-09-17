@@ -15,7 +15,6 @@ export class Provider extends Component {
 
     const value = {
       authenticatedUser: authenticatedUser,
-      data: this.data,
       actions: {
         signIn: this.signIn, 
         signOut: this.signOut

@@ -2,19 +2,20 @@ import React, {useState, useEffect}  from 'react';
 import {NavLink} from 'react-router-dom';
 import axios from 'axios';
 
-const CourseDetail = ({match}) => {
+const CourseDetail = ({match, context}) => {
 
     const [data, setData] = useState({});
     const [userData, setUserData] = useState({})
     const courseId = match.params.id;
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/courses/${courseId}`)
+        const user = axios.get(`http://localhost:5000/api/courses/${courseId}`)
             .then(results => {
                 setData(results.data)
                 setUserData(results.data.User)
             })
             .catch(error => console.log("Error fetching and parsing data", error))
+        console.log(context)
     }, [courseId])
 
 
@@ -26,8 +27,20 @@ const CourseDetail = ({match}) => {
         <div>
             <div className="actions--bar">
             <div className="bounds">
-            <div className="grid-100"><span><NavLink className='button' to={`/courses/${courseId}/update`}>Update Course</NavLink><button className='button' onClick={deleteCourse}>Delete Course</button></span>
-            <NavLink className='button button-secondary' to='/'>Return to List</NavLink></div>
+            <div className="grid-100">
+            {
+                context.authenticatedUser ? 
+                    <React.Fragment>
+                        <span><NavLink className='button' to={`/courses/${courseId}/update`}>Update Course</NavLink><button className='button' onClick={deleteCourse}>Delete Course</button></span>
+                        <NavLink className='button button-secondary' to='/'>Return to List</NavLink>
+                    </React.Fragment>
+                    
+                :
+                    <React.Fragment>
+                        <NavLink className='button button-secondary' to='/'>Return to List</NavLink>
+                    </React.Fragment>
+            }
+            </div>
             
             </div>
         </div>

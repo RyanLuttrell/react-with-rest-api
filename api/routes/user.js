@@ -69,7 +69,8 @@ router.get('/users',asyncHandler(userAuthentication), asyncHandler(async (req, r
   res.status(200).json({
     firstName: user.firstName,
     lastName: user.lastName,
-    emailAddress: user.emailAddress
+    emailAddress: user.emailAddress,
+    id: user.id
   })
 }));
 
