@@ -85,10 +85,10 @@ router.get('/courses/:id', asyncHandler(async (req, res) => {
 // POST /api/courses 201 - Creates a course, sets the Location header to the URI for the course, and returns no content
 router.post('/courses', asyncHandler(userAuthentication),[
   check('title')
-    .exists()
+    .exists({checkNull: true, checkFalsy: true})
     .withMessage('Please provide a value for Title'),
   check('description')
-    .exists()
+    .exists({checkNull: true, checkFalsy: true})
     .withMessage('Please provide a value for Description')
 ], asyncHandler(async (req, res) => {
   const user = req.currentUser;
@@ -119,30 +119,33 @@ router.post('/courses', asyncHandler(userAuthentication),[
 // PUT /api/courses/:id 204 - Updates a course and returns no content
 router.put('/courses/:id', asyncHandler(userAuthentication), [
   check('title')
-    .exists()
+    .exists({checkNull: true, checkFalsy: true})
     .withMessage('Please provide a value for Title'),
   check('description')
-    .exists()
+    .exists({checkNull: true, checkFalsy: true})
     .withMessage('Please provide a value for Description')
 ], asyncHandler(async (req, res) => {
-
-  const user = req.currentUser;
-  const errors = validationResult(req);
-
-  //If there are errors in the validation process, create an array of the errors and send that to the client
-  if (!errors.isEmpty()) {
-    const errorMessages = errors.array().map(error => error.msg);
-    return res.status(400).json({errors: errorMessages})
-  }
-
-  const course = await Course.findByPk(req.params.id)
-
-  //If the user is authenticated, allow them to update the course but only if they are the creator of the course
-  if (course.userId === user.id) {
-    await course.update(req.body)
-    res.status(204).end();
-  } else {
-    res.status(403).json({message: "Sorry, you don't have permission to edit this course"})
+  const id = req.params.id; 
+  const owner = req.currentUser.id; 
+  const course = await Course.findByPk(id);
+  if (course){
+    if (course && owner === course.userId){
+      // Attempt to get the validation result from the Request object.
+      const errors = validationResult(req);
+      // If there are validation errors...
+      if (!errors.isEmpty()) {
+        // Use the Array `map()` method to get a list of error messages.
+        const errorMessages = errors.array().map(error => error.msg);
+        // Return the validation errors to the client.
+        return res.status(400).json({ errors: errorMessages });
+      }
+      await course.update(req.body);
+      res.status(204).end();
+    } else {
+      res.status(403).json({message: "User must be Course Owner in order to Update Course"})
+    } 
+  } else{
+    res.status(404).json({message: "Course Not Found."})
   }
 }));
 

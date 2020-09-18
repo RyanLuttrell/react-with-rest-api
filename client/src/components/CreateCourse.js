@@ -9,7 +9,6 @@ export default class CreateCourse extends Component  {
         description: '',
         estimatedTime: '',
         materialsNeeded: '',
-        UserId: '',
         errors: []
       }
     
@@ -105,12 +104,13 @@ export default class CreateCourse extends Component  {
 
     submit = async () => {
         const {context} = this.props;
+        const {title, description, estimatedTime, materialsNeeded, errors} = this.state
         const courseInfo = {
-            title: this.state.title,
-            description: this.state.description,
-            estimatedTime: this.state.estimatedTime,
-            materialsNeeded: this.state.materialsNeeded
-        }
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+          };
         await axios.post('http://localhost:5000/api/courses', courseInfo, {
             headers: {
                 'Content-Type': 'application/json'
@@ -123,14 +123,11 @@ export default class CreateCourse extends Component  {
         .catch(error => {
             this.setState(() => {
               return {
-                errors: [...this.state.errors, error.response.data.message]
+                errors: error.response.data.errors || []
               }
             })
-            console.log(error.response.data.message)
+            console.log(error.response)
           })
-
-
-        this.props.history.push('/')
     }
     change = (event) => {
         const name = event.target.name;

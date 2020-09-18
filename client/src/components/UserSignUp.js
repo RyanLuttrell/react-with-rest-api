@@ -104,10 +104,10 @@ export default class UserSignUp extends Component {
         .catch(error => {
           this.setState(() => {
             return {
-              errors: [...this.state.errors, error.response.data.message]
+              errors: error.response.data.errors
             }
           })
-          console.log(error.response.data.message)
+          console.log(error.response)
         })
       return request;
     } else {

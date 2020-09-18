@@ -10,15 +10,22 @@ module.exports = (sequelize) => {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
-                autoIncrement: true
             },
             title: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'Sorry but we need a Title'},
+                    notNull: true
+                }
             },
             description: {
                 type: DataTypes.TEXT,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'Sorry but we need a Description'},
+                    notNull: true
+                }
             },
             estimatedTime: {
                 type: DataTypes.STRING,

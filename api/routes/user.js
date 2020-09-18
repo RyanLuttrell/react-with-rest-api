@@ -77,49 +77,47 @@ router.get('/users',asyncHandler(userAuthentication), asyncHandler(async (req, r
 // POST /api/users 201 - Creates a user, sets the Location header to "/", and returns no content
 router.post('/users', [
   check('firstName')
-    .exists()
-    .withMessage('Please provide a value for First Name'),
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a value for "first name"'),
   check('lastName')
-    .exists()
-    .withMessage('Please provide a value for Last Name'),
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a value for "last name"'),
   check('emailAddress')
-    .exists()
-    .withMessage('Please provide a value for Email Address'),
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a value for "email"')
+    .isEmail()
+    .withMessage('Please provide a valid email address for "email"'),
   check('password')
-    .exists()
-    .withMessage('Please provide a value for Password')
-], asyncHandler(async (req, res) => {
-
-  const errors = validationResult(req);
-  
-  //If there are errors in the validation process, create an array of the errors and send that to the client
-  if (!errors.isEmpty()) {
-    const errorMessages = errors.array().map(error => error.msg);
-    return res.status(400).json({errors: errorMessages})
-  }
-
-  const user = req.body;
-  const regex = RegExp(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-
-  if (regex.test(req.body.emailAddress)) {
-    const userCheck = await User.findAll({
-      where: {
-        emailAddress: req.body.emailAddress
-      }
-    })
-    if (userCheck.length === 0) {
-      user.password = bcrypt.hashSync(user.password, 10)
-      await User.create(user)
-      res.location('/');
-      res.status(201).end();
-    } else {
-      res.status(400).json({message: "Sorry, that email address already exists"})
-    }
-  } else {
-    res.status(400).json({message: 'Please provide a valid email address'})
-  }
-
-
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a value for "password"'),
+], asyncHandler (async(req, res) => {
+  // Good request, hash password
+  try{
+    // Validation Errors prior to storing new User data   
+    const errors = validationResult(req);
+    if (!errors.isEmpty()){
+        const errorMessages = errors.array().map(error => error.msg);
+        return res.status(400).json({ errors: errorMessages });
+    } 
+    await User.create({
+      firstName: req.body.firstName, 
+      lastName: req.body.lastName, 
+      emailAddress: req.body.emailAddress,
+      password: await bcrypt.hash(req.body.password, 10)
+      });
+  } catch (error){
+    // Unique Email Requirement
+    if (error.errors[0].type === 'unique violation'){
+      return res.status(400).json({message: 'Email in use.'})
+    }   
+  } 
+  res.status(201).location('/').end();
 }));
+
+
+
+  // } else {
+  //   res.status(400).json({errors: errorMessages})
+  // }
 
 module.exports = router

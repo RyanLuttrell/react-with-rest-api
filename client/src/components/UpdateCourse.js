@@ -140,7 +140,14 @@ export default class UpdateCourse extends Component  {
                     password: context.password
                   }
             })
-            console.log('It Worked!!!')
+                .catch(error => {
+                    this.setState(() => {
+                        return {
+                            errors: error.response.data.errors || []
+                        }
+                    })
+                    console.log(error.response)
+                })
         } else {
             this.setState(() => {
                 return {
@@ -148,7 +155,6 @@ export default class UpdateCourse extends Component  {
                 }
             })
         }
-        this.props.history.push('/')
     }
 
     testing = async () => {

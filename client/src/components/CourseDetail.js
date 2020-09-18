@@ -1,5 +1,6 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
+import ReactMarkdown from 'react-markdown'
 import axios from 'axios';
 
 export default class CourseDetail extends React.Component {
@@ -73,11 +74,11 @@ export default class CourseDetail extends React.Component {
                     <ul className="course--stats--list">
                     <li className="course--stats--list--item">
                         <h4>Estimated Time</h4>
-                        <h3>{data.estimatedTime}</h3>
+                        <ReactMarkdown source={data.estimatedTime} />
                     </li>
                     <li className="course--stats--list--item">
                         <h4>Materials Needed</h4>
-                        {data.materialsNeeded}
+                        <ReactMarkdown source={data.materialsNeeded} />
                     </li>
                     </ul>
                 </div>

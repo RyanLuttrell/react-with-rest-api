@@ -14,19 +14,35 @@ module.exports = (sequelize) => {
             },
             firstName: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'Sorry but we need a First Name'},
+                    notNull: true
+                }
             },
             lastName: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'Sorry but we need a Last Name'},
+                    notNull: true
+                }
             },
             emailAddress: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'Sorry but we need an Email Address'},
+                    notNull: true
+                }
             },
             password: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'Sorry but we need a Password'},
+                    notNull: true
+                }
             }
         }, {sequelize});
     return User;
