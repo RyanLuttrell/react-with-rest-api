@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Form from './Form';
 
 export default class UserSignIn extends Component {
+
+//Initialize state
   state = {
     email: '',
     password: '',
@@ -10,6 +12,8 @@ export default class UserSignIn extends Component {
   }
 
   render() {
+
+//Deconstruct state for easier use
     const {
       email,
       password,
@@ -51,6 +55,7 @@ export default class UserSignIn extends Component {
     );
   }
 
+//Anytime there is a change in the text fields, update state 
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -62,6 +67,7 @@ export default class UserSignIn extends Component {
     });
   }
 
+//When the user clicks the "Sign In" button, verify the authenticity of the user and display any necessary validation errors
   submit = () => {
     const {context} = this.props;
     const {from} = this.props.location.state || {from: {pathname: '/'}};
@@ -75,11 +81,14 @@ export default class UserSignIn extends Component {
             }
           })
         } else {
+
+//Send the user back to the page they were trying to access if they have successfully logged in
           this.props.history.push(from)
         }
       })
   }
 
+//If the user clicks the "Cancel" button, send them back to the home root
   cancel = () => {
     this.props.history.push('/')
   }

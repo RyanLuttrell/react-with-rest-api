@@ -4,12 +4,13 @@ import ReactMarkdown from 'react-markdown'
 import axios from 'axios';
 
 export default class CourseDetail extends React.Component {
-
+// Initiate state to empty objects for the two variables
     state = {
         data: {},
         userData: {}
     }
 
+//When the component mounts, fetch the appropriate course and modify state with the data
     componentDidMount() {
         axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
         .then(results => {
@@ -25,6 +26,8 @@ export default class CourseDetail extends React.Component {
 
     render() {
 
+
+//Set the variables for the component and destructure props and state
         const {context, match} = this.props;
         const courseId = match.params.id;
         const authUser = context.authenticatedUser;
@@ -88,6 +91,7 @@ export default class CourseDetail extends React.Component {
         )
     }
 
+//When the delete course button is clicked, send a delete request to the server with the appropriate information
     deleteCourse = () => {
         const courseId = this.props.match.params.id
         const {context} = this.props;

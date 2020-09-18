@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 
+//A simple component that handles the creation of the different course previews
 const CourseModule = (props) => {
 
     const url = `/courses/${props.data.id}`

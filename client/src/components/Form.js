@@ -1,6 +1,8 @@
 import React from 'react';
 
 export default (props) => {
+
+//Deconstruct the props for easier use
   const {
     cancel,
     errors,
@@ -8,12 +10,14 @@ export default (props) => {
     submitButtonText,
     elements,
   } = props;
-
+  
+//Primarily a helper function to prevent the default action when a form is submitted
   function handleSubmit(event) {
     event.preventDefault();
     submit();
   }
 
+//Primarily a helper function to prevent the default action when a form is cancelled
   function handleCancel(event) {
     event.preventDefault();
     cancel();
@@ -33,6 +37,7 @@ export default (props) => {
   );
 }
 
+//Primarily a helper function to display the validation errors to the user when a form is not filled in correctly
 function ErrorsDisplay({ errors }) {
   let errorsDisplay = null;
 

@@ -4,6 +4,8 @@ import Form from './Form';
 import axios from 'axios';
 
 export default class UserSignUp extends Component {
+
+//Initialize state
   state = {
     firstName: '',
     lastName: '',
@@ -14,6 +16,7 @@ export default class UserSignUp extends Component {
   }
 
   render() {
+//Deconstruct the state object for easier use
     const {
       firstName,
       lastName,
@@ -80,6 +83,7 @@ export default class UserSignUp extends Component {
     );
   }
 
+//Anytime there is a change in the text fields, update state 
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -91,6 +95,7 @@ export default class UserSignUp extends Component {
     });
   }
 
+//When the user clicks the "Sign Up" button, send a post request to the server with the information that they've input
   submit = async () => {
     const {firstName, lastName, email, password, confirmPassword} = this.state;
 
@@ -101,6 +106,7 @@ export default class UserSignUp extends Component {
         emailAddress: email,
         password: password
       })
+//If they have not input all of the necessary information, show the necessary validation errors
         .catch(error => {
           this.setState(() => {
             return {
@@ -119,6 +125,7 @@ export default class UserSignUp extends Component {
     }
   }
 
+//If the user clicks the "Cancel" button, send them back to the home root
   cancel = () => {
     this.props.history.push('/')
   }

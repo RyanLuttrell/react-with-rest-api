@@ -3,7 +3,7 @@ import axios from 'axios';
 import Form from './Form';
 
 export default class CreateCourse extends Component  {
-
+//Initializing state
     state = {
         title: '',
         description: '',
@@ -11,8 +11,9 @@ export default class CreateCourse extends Component  {
         materialsNeeded: '',
         errors: []
       }
-    
-      render() {
+
+//Deconstruct the state object into its variables for easier use
+    render() {
         const {
           title,
           description,
@@ -102,9 +103,10 @@ export default class CreateCourse extends Component  {
         </div>
     )}
 
+//When the submit button is clicked, gather the necessary information and send a post request to the API to create a new cours
     submit = async () => {
         const {context} = this.props;
-        const {title, description, estimatedTime, materialsNeeded, errors} = this.state
+        const {title, description, estimatedTime, materialsNeeded} = this.state
         const courseInfo = {
             title,
             description,
@@ -129,6 +131,7 @@ export default class CreateCourse extends Component  {
             console.log(error.response)
           })
     }
+//Anytime there is a change in the text fields, update state 
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -140,7 +143,7 @@ export default class CreateCourse extends Component  {
         });
     }
     
-
+//Send the user to the home root when "Cancel" is clicked
     cancel = () => {
         this.props.history.push('/')
       }

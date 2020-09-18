@@ -4,6 +4,7 @@ import Form from './Form';
 
 export default class UpdateCourse extends Component  {
 
+//On page load, fetch the details for the specific course and update state
     componentDidMount() {
         const courseId = this.props.match.params.id
         axios.get(`http://localhost:5000/api/courses/${courseId}`)
@@ -21,6 +22,7 @@ export default class UpdateCourse extends Component  {
         .catch(error => console.log("Error fetching and parsing data", error))
     }
 
+//Initialize state with the following variables
     state = {
         title: '',
         description: '',
@@ -31,6 +33,8 @@ export default class UpdateCourse extends Component  {
       }
     
       render() {
+
+//Deconstruct state for easier use
         const {
           title,
           description,
@@ -120,6 +124,7 @@ export default class UpdateCourse extends Component  {
         </div>
     )}
 
+//When the "Update Course" button is clicked take the variables that are in state and send thtem to the api as the new data for the course
     submit = () => {
         const courseId = this.props.match.params.id
         const {context} = this.props;
@@ -130,6 +135,8 @@ export default class UpdateCourse extends Component  {
             estimatedTime: this.state.estimatedTime,
             materialsNeeded: this.state.materialsNeeded
         }
+
+//Only allow the changes to take place if the current user matches the UserId of the person that created the course in the first place
         if (UserId === context.authenticatedUser.id) {
             axios.put(`http://localhost:5000/api/courses/${courseId}`, updates, {
                 headers: {
@@ -157,13 +164,7 @@ export default class UpdateCourse extends Component  {
         }
     }
 
-    testing = async () => {
-        await axios.get('http://localhost:5000/api/courses/2')
-            .catch(error => {
-                console.log(error.response.data)
-            })
-    }
-
+//Anytime there is a change in the text fields, update state 
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -174,7 +175,7 @@ export default class UpdateCourse extends Component  {
           };
         });
     }
-
+//If the user clicks the "Cancel" button, send them to the home root
     cancel = () => {
         this.props.history.push('/')
       }
