@@ -27,6 +27,7 @@ export default class UserSignUp extends Component {
       <div className="bounds">
         <div className="grid-33 centered signin">
           <h1>Sign Up</h1>
+
           <Form 
             cancel={this.cancel}
             errors={errors}
@@ -90,17 +91,25 @@ export default class UserSignUp extends Component {
     });
   }
 
-  submit = () => {
-    const {context} = this.props;
+  submit = async () => {
     const {firstName, lastName, email, password, confirmPassword} = this.state;
 
     if (password === confirmPassword) {
-      axios.post('http://localhost:5000/api/users', {
+      const request = await axios.post('http://localhost:5000/api/users', {
         firstName: firstName,
         lastName: lastName,
         emailAddress: email,
         password: password
       })
+        .catch(error => {
+          this.setState(() => {
+            return {
+              errors: [...this.state.errors, error.response.data.message]
+            }
+          })
+          console.log(error.response.data.message)
+        })
+      return request;
     } else {
       this.setState(() => {
         return{
