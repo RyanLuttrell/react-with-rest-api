@@ -122,6 +122,9 @@ export default class CreateCourse extends Component  {
                 password: context.password
             }
         })
+        .then(user => {
+            this.props.history.push('/')
+        })
         .catch(error => {
             this.setState(() => {
               return {

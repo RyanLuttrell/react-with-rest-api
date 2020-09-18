@@ -100,12 +100,15 @@ export default class UserSignUp extends Component {
     const {firstName, lastName, email, password, confirmPassword} = this.state;
 
     if (password === confirmPassword) {
-      const request = await axios.post('http://localhost:5000/api/users', {
+      const response = await axios.post('http://localhost:5000/api/users', {
         firstName: firstName,
         lastName: lastName,
         emailAddress: email,
         password: password
       })
+        .then(results => {
+          this.props.history.push('/')
+        })
 //If they have not input all of the necessary information, show the necessary validation errors
         .catch(error => {
           this.setState(() => {
@@ -115,7 +118,6 @@ export default class UserSignUp extends Component {
           })
           console.log(error.response)
         })
-      return request;
     } else {
       this.setState(() => {
         return{

@@ -92,10 +92,10 @@ export default class CourseDetail extends React.Component {
     }
 
 //When the delete course button is clicked, send a delete request to the server with the appropriate information
-    deleteCourse = () => {
+    deleteCourse = async () => {
         const courseId = this.props.match.params.id
         const {context} = this.props;
-        axios.delete(`http://localhost:5000/api/courses/${courseId}`, {
+        await axios.delete(`http://localhost:5000/api/courses/${courseId}`, {
             auth: {
                 username: context.authenticatedUser.emailAddress,
                 password: context.password
