@@ -77,7 +77,7 @@ export default class UserSignIn extends Component {
         if (user.data === null) {
           this.setState(() => {
             return {
-              error: user
+              errors: user
             }
           })
         } else {
@@ -85,6 +85,14 @@ export default class UserSignIn extends Component {
 //Send the user back to the page they were trying to access if they have successfully logged in
           this.props.history.push(from)
         }
+      })
+      .catch(error => {
+        this.setState(() => {
+          return {
+            errors: [error.response.data.message] || []
+          }
+        })
+        console.log(error.response)
       })
   }
 
