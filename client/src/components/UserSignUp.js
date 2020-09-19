@@ -100,7 +100,7 @@ export default class UserSignUp extends Component {
     const {firstName, lastName, email, password, confirmPassword} = this.state;
 
     if (password === confirmPassword) {
-      const response = await axios.post('http://localhost:5000/api/users', {
+      await axios.post('http://localhost:5000/api/users', {
         firstName: firstName,
         lastName: lastName,
         emailAddress: email,
