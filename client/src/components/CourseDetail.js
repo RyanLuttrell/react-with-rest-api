@@ -34,7 +34,10 @@ export default class CourseDetail extends React.Component {
         const {data} = this.state;
         const {userData} = this.state;
 
+
+
         return (
+
             <div>
                 <div className="actions--bar">
                 <div className="bounds">
@@ -67,9 +70,7 @@ export default class CourseDetail extends React.Component {
                     <p>by {userData.firstName} {userData.lastName}</p>
                 </div>
                 <div className="course--description">
-                    <ReactMarkdown>
-                        {data.description}
-                    </ReactMarkdown>
+                    <ReactMarkdown source={data.description} />
                 </div>
                 </div>
                 <div className="grid-25 grid-right">
@@ -81,9 +82,7 @@ export default class CourseDetail extends React.Component {
                     </li>
                     <li className="course--stats--list--item">
                         <h4>Materials Needed</h4>
-                        <ReactMarkdown>
-                            {data.materialsNeeded}
-                        </ReactMarkdown>
+                        <ReactMarkdown source={data.materialsNeeded} />
                     </li>
                     </ul>
                 </div>
