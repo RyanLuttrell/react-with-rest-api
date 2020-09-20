@@ -67,9 +67,9 @@ export default class CourseDetail extends React.Component {
                     <p>by {userData.firstName} {userData.lastName}</p>
                 </div>
                 <div className="course--description">
-                    <p>
+                    <ReactMarkdown>
                         {data.description}
-                    </p>
+                    </ReactMarkdown>
                 </div>
                 </div>
                 <div className="grid-25 grid-right">
@@ -77,11 +77,13 @@ export default class CourseDetail extends React.Component {
                     <ul className="course--stats--list">
                     <li className="course--stats--list--item">
                         <h4>Estimated Time</h4>
-                        <ReactMarkdown source={data.estimatedTime} />
+                        <p>{data.estimatedTime}</p>
                     </li>
                     <li className="course--stats--list--item">
                         <h4>Materials Needed</h4>
-                        <ReactMarkdown source={data.materialsNeeded} />
+                        <ReactMarkdown>
+                            {data.materialsNeeded}
+                        </ReactMarkdown>
                     </li>
                     </ul>
                 </div>
