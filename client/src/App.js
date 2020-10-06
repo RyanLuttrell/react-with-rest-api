@@ -12,7 +12,6 @@ import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute';
-import Sidebar from './components/Sidebar';
 
 const HeaderWithContext = withContext(Header);
 const UserSignInWithContext = withContext(UserSignIn);
@@ -29,7 +28,6 @@ export default () => {
     <Router>
       <div>
         <HeaderWithContext />
-        {/* <Sidebar /> */}
         
         <Switch>
           <Route exact path='/' component={Courses} />
